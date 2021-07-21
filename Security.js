@@ -71,6 +71,9 @@ class Security {
                     text("TREASURE UNLOCKED",250, 200);
                     home2();
                   }
+                  else{
+                      losehome2();
+                  }
             }
         });
         
