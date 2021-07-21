@@ -48,7 +48,7 @@ sound2 = loadSound("sounds/level1_sound2.mp3");
 
 function setup() {
 createCanvas(1000,600);
-//sound1.play();
+sound1.play();
 // homeButton = createSprite(750,60);
 // homeButton.addImage(homeImg);
 // homeButton.scale = 0.5;
@@ -74,45 +74,35 @@ storyButton.scale = 0.5;
 function draw() {
 background(backgroundImg);  
 
-if(mousePressedOver(startButton)){
 
-startButton.visible = false;
-storyButton.visible = false;
-background(level1Img);
-playButton=createImg('images/play.png')
-playButton.position(750,150);
-playButton.size(50,50);
-playButton.mouseClicked(play1);
-
-homeButton=createImg('images/home.png')
-homeButton.position(750,60);
-homeButton.size(50,50);
-homeButton.mouseClicked(home)
-backgroundImg = null;
-}
+start();
 
 if(mousePressedOver(storyButton)){
 backgroundImg = null;
-startButton.visible = false;
 storyButton.visible = false;
 homeButton=createImg('images/home.png')
 homeButton.position(750,60);
 homeButton.size(50,50);
 homeButton.mouseClicked(home)
 background(infoSlideImg);
+startButton.visible=false;
+playButton.visible=true;
+    start();  
+
 }
 
 if(keyDown("right_arrow")){
 player.x = player.x +1;
 }
-    
+
 
 drawSprites();
 
 }
 
 function home2(){
-background(level2Img );
+background(level2Img);
+sound2.stop();
 startButton.visible = false;
 storyButton.visible = false;
 playButton=createImg('images/play.png')
@@ -120,8 +110,51 @@ playButton.position(750,150);
 playButton.size(50,50);
 playButton.mouseClicked(play2);
 }
+
+function start()
+{
+    if(mousePressedOver(startButton)){
+        sound1.stop();
+        sound2.play();
+        startButton.visible = false;
+        storyButton.visible = false;
+        background(level1Img);
+        playButton=createImg('images/play.png')
+        playButton.position(750,150);
+        playButton.size(50,50);
+        playButton.mouseClicked(play1);
+        
+        homeButton=createImg('images/home.png')
+        homeButton.position(750,60);
+        homeButton.size(50,50);
+        homeButton.mouseClicked(home)
+        backgroundImg = null;
+        }
+}
+
+function losehome2(){
+    background(playagainImg);
+    sound2.stop();
+    startButton.visible = false;
+    storyButton.visible = false;
+    playButton=createImg('images/play.png')
+    playButton.position(750,150);
+    playButton.size(50,50);
+    playButton.mouseClicked(play1);
+    security.button1.hide();
+    security.access1.hide();
+    security.button2.hide();
+    security.access2.hide();
+    security.button3.hide();
+    security.access3.hide();
+    }
+
 function play2(){
     background(level1bgImg)
+    playButton.visible = false;
+    playButton.hide();
+
+
 // maze code
 var cardboard1=createSprite(10,70,100,20);
 cardboard1.shapeColor="brown";
@@ -207,10 +240,17 @@ backgroundImg=null;
 
 
 function home(){
+background(backgroundImg1)
 startButton.visible = true;
 storyButton.visible = true;
-background(backgroundImg1)
+security.button1.hide();
+    security.access1.hide();
+    security.button2.hide();
+    security.access2.hide();
+    security.button3.hide();
+    security.access3.hide();
 backgroundImg=null;
+
 }
 
 
