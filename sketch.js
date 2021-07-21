@@ -1,3 +1,10 @@
+var serve = 0;
+var story = 1;
+var level1start = 2;
+var level1play = 3;
+var level1end = 4;
+var level1win = 5;
+var level2play = 6;
 var gameState = 0;
 var background, backgroundImg;
 var background1, backgroundImg1;
@@ -16,7 +23,10 @@ var playagain, playagainImg;
 var restart, restartImg;
 var player, playerImg;
 var youwinstory, youwinstoryImg;
-
+var startButton, storyButton,playButton;
+var security;
+var cardboard1,cardboard2,cardboard3,cardboard4,cardboard5,cardboard6,cardboard7,cardboard8,cardboard9,cardboard10,cardboard11,cardboard12,cardboard13,cardboard14,cardboard15,cardboard16,
+cardboard17,cardboard18,cardboard19,cardboard20,cardboard21,cardboard22;
 
 const accessCode1 = "ZOMBIE";
 const accessCode2 = "VAMPIRE";
@@ -49,10 +59,7 @@ sound2 = loadSound("sounds/level1_sound2.mp3");
 function setup() {
 createCanvas(1000,600);
 sound1.play();
-// homeButton = createSprite(750,60);
-// homeButton.addImage(homeImg);
-// homeButton.scale = 0.5;
-// homeButton.visible = false;
+
 
 startButton = createSprite(100,350);
 startButton.addImage(startImg);
@@ -62,34 +69,183 @@ storyButton = createSprite(100,250);
 storyButton.addImage(storyImg);
 storyButton.scale = 0.5;
 
-// playButton = createSprite(750,150);
-// playButton.addImage(playImg);
-// playButton.scale = 0.4;
-// // playButton.visible = false;
+homeButton=createSprite(750,60);
+homeButton.addImage(homeImg)
+homeButton.scale = 0.2;
 
+playButton=createSprite(750,150);
+playButton.addImage(playImg);
+playButton.scale = 0.2;
 
+cardboard1=createSprite(10,70,100,20);
+cardboard1.shapeColor="brown";
+
+cardboard2=createSprite(105,35,20,150);
+cardboard2.shapeColor="brown";
+
+cardboard3=createSprite(175,35,120,20);
+cardboard3.shapeColor="brown";
+
+cardboard4=createSprite(150,145,20,120);
+cardboard4.shapeColor="brown";
+
+cardboard5=createSprite(100,220,100,20);
+cardboard5.shapeColor="brown";
+
+cardboard6=createSprite(60,175,20,100);
+cardboard6.shapeColor="brown";
+
+cardboard7=createSprite(210,200,20,150);
+cardboard7.shapeColor="brown";
+
+cardboard8=createSprite(250,95,145,20);
+cardboard8.shapeColor="brown";
+
+cardboard9=createSprite(280,60,20,50);
+cardboard9.shapeColor="brown";
+
+cardboard10=createSprite(75,300,20,100);
+cardboard10.shapeColor="brown";
+
+cardboard11=createSprite(2,160,100,20);
+cardboard11.shapeColor="brown";
+
+cardboard12=createSprite(370,40,100,20);
+cardboard12.shapeColor="brown";
+
+cardboard13=createSprite(370,150,200,20);
+cardboard13.shapeColor="brown";
+
+cardboard14=createSprite(280,260,20,100);
+cardboard14.shapeColor="brown";
+
+cardboard15=createSprite(365,260,100,20);
+cardboard15.shapeColor="brown";
+
+cardboard16=createSprite(295,315,150,20);
+cardboard16.shapeColor="brown";
+
+cardboard17=createSprite(360,95,20,90);
+cardboard17.shapeColor="brown";
+
+cardboard18=createSprite(30,290,80,20);
+cardboard18.shapeColor="brown";
+
+cardboard19=createSprite(150,290,20,100);
+cardboard19.shapeColor="brown";
+
+cardboard20=createSprite(270,360,100,20);
+cardboard20.shapeColor="brown";
+
+cardboard21=createSprite(10,350,20,100);
+cardboard21.shapeColor="brown";
+
+cardboard22=createSprite(215,355,20,100);
+cardboard22.shapeColor="brown";
+
+startButton.visible = false;
+storyButton.visible = false;
+homeButton.visible = false;
+playButton.visible = false;
+security = new Security();
+cardboardhide();
 
 }
 
 function draw() {
-background(backgroundImg);  
+
+    if(gameState === serve)
+    {
+        background(backgroundImg);  
+        startButton.visible = true;
+        storyButton.visible = true;
+        if(mousePressedOver(startButton))
+            {
+            gameState = level1start;
+          
+            }
+        if(mousePressedOver(storyButton))
+            {
+            gameState = story;
+    
+            }    }
+    else if (gameState === story)
+    {
+        background(infoSlideImg);
+        storyButton.visible = false;
+        startButton.visible=false;
+        homeButton.visible = true;
+
+    }
+    else if (gameState === level1start)
+    {
+        background(level1Img);
+        sound1.stop();
+        sound2.play();
+        startButton.visible = false;
+        storyButton.visible = false;
+        playButton.visible = true;
+        homeButton.visible = true;
+        if(mousePressedOver(playButton))
+        {
+            gameState = level1play;
+        }
+
+    }
+    else if(gameState === level1play)
+    {
+        background(level1bgImg);
+        playButton.visible = false;
+        security.display();
+        clues();
+    }
+    else if(gameState === level1win)
+    {
+        background(level2Img);
+        sound2.stop();
+        startButton.visible = false;
+        storyButton.visible = false;
+        playButton.visible = true;
+        if(mousePressedOver(playButton))
+        {
+            gameState = level2play;
+        }
+    }
+    else if(gameState === level1end)
+    {
+        background(playagainImg);
+        sound2.stop();
+        startButton.visible = false;
+        storyButton.visible = false;
+        playButton.visible = true;
+        security.hide();
+        if(mousePressedOver(playButton))
+        {
+            gameState = level1play;
+            security = new Security();
+            security.display()
+
+        }
+       
+      
+    }
+    else if (gameState === level2play)
+    {
+        background(level1bgImg);
+        play2();
+    }
+    if(mousePressedOver(homeButton))
+    {
+        gameState = serve;
+        homeButton.visible = false;
+        playButton.visible = false;
+        security.hide();
+        cardboardhide()
+         }
 
 
-start();
 
-if(mousePressedOver(storyButton)){
-backgroundImg = null;
-storyButton.visible = false;
-homeButton=createImg('images/home.png')
-homeButton.position(750,60);
-homeButton.size(50,50);
-homeButton.mouseClicked(home)
-background(infoSlideImg);
-startButton.visible=false;
-playButton.visible=true;
-    start();  
 
-}
 
 if(keyDown("right_arrow")){
 player.x = player.x +1;
@@ -97,161 +253,42 @@ player.x = player.x +1;
 
 
 drawSprites();
-
+console.log(gameState)
 }
 
-function home2(){
-background(level2Img);
-sound2.stop();
-startButton.visible = false;
-storyButton.visible = false;
-playButton=createImg('images/play.png')
-playButton.position(750,150);
-playButton.size(50,50);
-playButton.mouseClicked(play2);
-}
 
-function start()
-{
-    if(mousePressedOver(startButton)){
-        sound1.stop();
-        sound2.play();
-        startButton.visible = false;
-        storyButton.visible = false;
-        background(level1Img);
-        playButton=createImg('images/play.png')
-        playButton.position(750,150);
-        playButton.size(50,50);
-        playButton.mouseClicked(play1);
-        
-        homeButton=createImg('images/home.png')
-        homeButton.position(750,60);
-        homeButton.size(50,50);
-        homeButton.mouseClicked(home)
-        backgroundImg = null;
-        }
-}
-
-function losehome2(){
-    background(playagainImg);
-    sound2.stop();
-    startButton.visible = false;
-    storyButton.visible = false;
-    playButton=createImg('images/play.png')
-    playButton.position(750,150);
-    playButton.size(50,50);
-    playButton.mouseClicked(play1);
-    security.button1.hide();
-    security.access1.hide();
-    security.button2.hide();
-    security.access2.hide();
-    security.button3.hide();
-    security.access3.hide();
-    }
 
 function play2(){
-    background(level1bgImg)
     playButton.visible = false;
-    playButton.hide();
-
 
 // maze code
-var cardboard1=createSprite(10,70,100,20);
-cardboard1.shapeColor="brown";
-
-var cardboard2=createSprite(105,35,20,150);
-cardboard2.shapeColor="brown";
-
-var cardboard3=createSprite(175,35,120,20);
-cardboard3.shapeColor="brown";
-
-var cardboard4=createSprite(150,145,20,120);
-cardboard4.shapeColor="brown";
-
-var cardboard5=createSprite(100,220,100,20);
-cardboard5.shapeColor="brown";
-
-var cardboard6=createSprite(60,175,20,100);
-cardboard6.shapeColor="brown";
-
-var cardboard7=createSprite(210,200,20,150);
-cardboard7.shapeColor="brown";
-
-var cardboard8=createSprite(250,95,145,20);
-cardboard8.shapeColor="brown";
-
-var cardboard9=createSprite(280,60,20,50);
-cardboard9.shapeColor="brown";
-
-var cardboard10=createSprite(75,300,20,100);
-cardboard10.shapeColor="brown";
-
-var cardboard11=createSprite(2,160,100,20);
-cardboard11.shapeColor="brown";
-
-var cardboard12=createSprite(370,40,100,20);
-cardboard12.shapeColor="brown";
-
-var cardboard13=createSprite(370,150,200,20);
-cardboard13.shapeColor="brown";
-
-var cardboard14=createSprite(280,260,20,100);
-cardboard14.shapeColor="brown";
-
-var cardboard15=createSprite(365,260,100,20);
-cardboard15.shapeColor="brown";
-
-var cardboard16=createSprite(295,315,150,20);
-cardboard16.shapeColor="brown";
-
-var cardboard17=createSprite(360,95,20,90);
-cardboard17.shapeColor="brown";
-
-var cardboard18=createSprite(30,290,80,20);
-cardboard18.shapeColor="brown";
-
-var cardboard19=createSprite(150,290,20,100);
-cardboard19.shapeColor="brown";
-
-var cardboard20=createSprite(270,360,100,20);
-cardboard20.shapeColor="brown";
-
-var cardboard21=createSprite(10,350,20,100);
-cardboard21.shapeColor="brown";
-
-var cardboard22=createSprite(215,355,20,100);
-cardboard22.shapeColor="brown";
-backgroundImg=null;
-drawSprites();
-}
-
-function play1(){
-  
-background(level1bgImg);
-playButton.hide();
-security = new Security();
-security.display()
-clues()
-// console.log(score)
-  
-backgroundImg=null;
+cardboard1.visible = true;
+cardboard2.visible = true;
+cardboard3.visible = true;
+cardboard4.visible = true;
+cardboard5.visible = true;
+cardboard6.visible = true;
+cardboard7.visible = true;
+cardboard8.visible = true;
+cardboard9.visible = true;
+cardboard10.visible = true;
+cardboard11.visible = true;
+cardboard12.visible = true;
+cardboard13.visible = true;
+cardboard14.visible = true;
+cardboard15.visible = true;
+cardboard16.visible = true;
+cardboard17.visible = true;
+cardboard18.visible = true;
+cardboard19.visible = true;
+cardboard20.visible = true;
+cardboard21.visible = true;
+cardboard22.visible = true;
 }
 
 
 
-function home(){
-background(backgroundImg1)
-startButton.visible = true;
-storyButton.visible = true;
-security.button1.hide();
-    security.access1.hide();
-    security.button2.hide();
-    security.access2.hide();
-    security.button3.hide();
-    security.access3.hide();
-backgroundImg=null;
 
-}
 
 
 
@@ -274,5 +311,33 @@ textSize(15)
 text("L E S E K O N T", 100,250)
 fill("lightblue")
 text("Hint: Stores all information !!", 100,270)
+
+}
+
+function cardboardhide()
+{
+
+    cardboard1.visible = false;
+    cardboard2.visible = false;
+    cardboard3.visible = false;
+    cardboard4.visible = false;
+    cardboard5.visible = false;
+    cardboard6.visible = false;
+    cardboard7.visible = false;
+    cardboard8.visible = false;
+    cardboard9.visible = false;
+    cardboard10.visible = false;
+    cardboard11.visible = false;
+    cardboard12.visible = false;
+    cardboard13.visible = false;
+    cardboard14.visible = false;
+    cardboard15.visible = false;
+    cardboard16.visible = false;
+    cardboard17.visible = false;
+    cardboard18.visible = false;
+    cardboard19.visible = false;
+    cardboard20.visible = false;
+    cardboard21.visible = false;
+    cardboard22.visible = false;
 
 }
